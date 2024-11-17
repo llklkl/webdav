@@ -223,7 +223,7 @@ func (s *Server) Stop() {
 	pkg.SafeG(func() {
 		defer wg.Done()
 		if s.httpsSvr != nil {
-			_ = s.httpSvr.Shutdown(ctx)
+			_ = s.httpsSvr.Shutdown(ctx)
 		}
 	})
 
