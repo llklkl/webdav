@@ -92,7 +92,7 @@ credential = "test"
 scope = ["media", "backup"]
 
 # 安全配置
-[safe]
+[security]
 # 5 分钟内，可重试密码的次数
 password_retry_per_five_minute = 10
 # 超过重试次数之后，是否要禁用该用户

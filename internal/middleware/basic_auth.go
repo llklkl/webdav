@@ -50,8 +50,8 @@ func (i ip) IsZero() bool {
 }
 
 type Basic struct {
-	users map[string]string
-	safe  *conf.SafeConf
+	users    map[string]string
+	security *conf.SecurityConf
 
 	bannedUsers *lru.Cache[string, *rate.Limiter]
 	bannedIp    *lru.Cache[ip, *rate.Limiter]
@@ -59,8 +59,8 @@ type Basic struct {
 
 func NewBasic(cfg *conf.Conf) *Basic {
 	b := &Basic{
-		users: map[string]string{},
-		safe:  cfg.Safe,
+		users:    map[string]string{},
+		security: cfg.Security,
 	}
 	b.bannedUsers, _ = lru.New[string, *rate.Limiter](1024)
 	b.bannedIp, _ = lru.New[ip, *rate.Limiter](1024)
@@ -125,31 +125,31 @@ func (b *Basic) Serve(next http.Handler) http.Handler {
 }
 
 func (b *Basic) markBanned(cip ip, username string) {
-	if b.safe.BanIpWrongPwd && !cip.IsZero() {
+	if b.security.BanIpWrongPwd && !cip.IsZero() {
 		if !b.bannedIp.Contains(cip) {
-			l := rate.NewLimiter(rate.Every(5*time.Minute/time.Duration(b.safe.PasswordRetryPerFiveMinute)), 5)
+			l := rate.NewLimiter(rate.Every(5*time.Minute/time.Duration(b.security.PasswordRetryPerFiveMinute)), 5)
 			b.bannedIp.ContainsOrAdd(cip, l)
 		}
 	}
-	if b.safe.BanUserWrongPwd && len(username) > 0 {
+	if b.security.BanUserWrongPwd && len(username) > 0 {
 		if !b.bannedUsers.Contains(username) {
-			l := rate.NewLimiter(rate.Every(5*time.Minute/time.Duration(b.safe.PasswordRetryPerFiveMinute)), 5)
+			l := rate.NewLimiter(rate.Every(5*time.Minute/time.Duration(b.security.PasswordRetryPerFiveMinute)), 5)
 			b.bannedUsers.ContainsOrAdd(username, l)
 		}
 	}
 }
 
 func (b *Basic) unmarkBanned(cip ip, username string) {
-	if b.safe.BanIpWrongPwd {
+	if b.security.BanIpWrongPwd {
 		b.bannedIp.Remove(cip)
 	}
-	if b.safe.BanUserWrongPwd {
+	if b.security.BanUserWrongPwd {
 		b.bannedUsers.Remove(username)
 	}
 }
 
 func (b *Basic) banClient(cip ip) bool {
-	if !b.safe.BanIpWrongPwd || cip.IsZero() {
+	if !b.security.BanIpWrongPwd || cip.IsZero() {
 		return false
 	}
 	limiter, ok := b.bannedIp.Get(cip)
@@ -161,7 +161,7 @@ func (b *Basic) banClient(cip ip) bool {
 }
 
 func (b *Basic) banUser(username string) bool {
-	if !b.safe.BanUserWrongPwd {
+	if !b.security.BanUserWrongPwd {
 		return false
 	}
 	limiter, ok := b.bannedUsers.Get(username)

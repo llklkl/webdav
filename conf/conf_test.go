@@ -63,7 +63,7 @@ func TestParse(t *testing.T) {
 				Scope:      nil,
 			},
 		},
-		Safe: &SafeConf{
+		Security: &SecurityConf{
 			PasswordRetryPerFiveMinute: 0,
 			BanUserWrongPwd:            false,
 			BanIpWrongPwd:              false,

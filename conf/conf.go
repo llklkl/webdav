@@ -47,7 +47,7 @@ type Conf struct {
 	Scope   []*ScopeConf   `toml:"scope"`
 	User    []*UserConf    `toml:"user"`
 
-	Safe *SafeConf `toml:"safe"`
+	Security *SecurityConf `toml:"security"`
 }
 
 type LibraryConf struct {
@@ -129,7 +129,7 @@ func ValidUser(cfg *Conf, conf *UserConf) error {
 	return nil
 }
 
-type SafeConf struct {
+type SecurityConf struct {
 	PasswordRetryPerFiveMinute int  `toml:"password_retry_per_five_minute"`
 	BanUserWrongPwd            bool `toml:"ban_user_wrong_pwd"`
 	BanIpWrongPwd              bool `toml:"ban_ip_wrong_pwd"`
@@ -186,8 +186,8 @@ func Parse(path string) (*Conf, error) {
 	if err := Valid(cfg); err != nil {
 		return nil, err
 	}
-	if cfg.Safe == nil {
-		cfg.Safe = &SafeConf{}
+	if cfg.Security == nil {
+		cfg.Security = &SecurityConf{}
 	}
 	return cfg, nil
 }

@@ -47,7 +47,7 @@ username = "test"
 credential = "test"
 scope = ["media", "backup"]
 
-[safe]
+[security]
 password_retry_per_five_minute = 10
 ban_user_wrong_pwd = true
 ban_ip_wrong_pwd = true
