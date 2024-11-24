@@ -1,12 +1,15 @@
 ## webdav
 
+[简体中文](README.md)｜[English](README.en.md)
+
 一个高性能的 webdav 服务器。支持的特性：
+
 1. 同时挂载多个文件夹；
 2. 支持文件夹/文件级别的访问范围、访问权限控制；
 3. 支持用户级别访问范围控制；
 4. 支持鉴权；
-   1. 目前仅支持 http basic 鉴权；
-   2. 其他鉴权方式计划支持。。
+    1. 目前仅支持 http basic 鉴权；
+    2. 其他鉴权方式计划支持。。
 5. 支持 http/https 独立监听；
 6. 支持 ip/用户级别密码防爆破处理
 
@@ -104,6 +107,7 @@ ban_ip_wrong_pwd = true
 ## 运行
 
 ### 二进制运行
+
 ```shell
 webdav serve -c /path/to/config.toml
 ```
