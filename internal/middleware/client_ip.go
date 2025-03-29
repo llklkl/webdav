@@ -40,13 +40,13 @@ func (ClientIP) Name() string {
 func (ClientIP) Serve(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		remote := r.RemoteAddr
-		if forwarded := r.Header.Get("X-Forwarded-For"); forwarded != "" {
+		if ip := r.Header.Get("X-Real-Ip"); ip != "" {
+			remote = strings.TrimSpace(ip)
+		} else if forwarded := r.Header.Get("X-Forwarded-For"); forwarded != "" {
 			ip, _, ok := strings.Cut(forwarded, ",")
 			if ok {
 				remote = strings.TrimSpace(ip)
 			}
-		} else if ip := r.Header.Get("X-Real-Ip"); ip != "" {
-			remote = strings.TrimSpace(ip)
 		}
 		host, _, _ := net.SplitHostPort(remote)
 		var clientIP net.IP
