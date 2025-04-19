@@ -40,8 +40,8 @@ type Conf struct {
 	HttpsListen    string `toml:"https_listen"`
 	TlsKeyPem      string `toml:"tls_key_pem"`
 	TlsCertPem     string `toml:"tls_cert_pem"`
-	TlsKeyPemPath  string `toml:"tls_key_perm_path"`
-	TlsCertPemPath string `toml:"tls_cert_perm_path"`
+	TlsKeyPemPath  string `toml:"tls_key_pem_path"`
+	TlsCertPemPath string `toml:"tls_cert_pem_path"`
 
 	Library []*LibraryConf `toml:"library"`
 	Scope   []*ScopeConf   `toml:"scope"`

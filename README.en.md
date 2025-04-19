@@ -39,8 +39,8 @@ https_listen = "127.0.0.1:8443"
 tls_key_pem = ""
 tls_cert_pem = ""
 # Specify certificate and private key, file path
-tls_key_perm_path = "pri.key"
-tls_cert_perm_path = "cert.crt"
+tls_key_pem_path = "pri.key"
+tls_cert_pem_path = "cert.crt"
 
 # Set resource library
 [[library]]

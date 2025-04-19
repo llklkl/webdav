@@ -50,13 +50,13 @@ var serveCmd = &cobra.Command{
 
 		cfg, err := conf.Parse(confPath)
 		if err != nil {
-			slog.Error("failed to parse configure file: %v", err)
+			slog.Error("failed to parse configure file", slog.Any("err", err))
 			return
 		}
 
 		svr, err := server.NewServer(cfg)
 		if err != nil {
-			slog.Error("failed to start webdav server: %v", err)
+			slog.Error("failed to start webdav server", slog.Any("err", err))
 			return
 		}
 		svr.Start()
