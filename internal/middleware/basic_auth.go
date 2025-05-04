@@ -100,7 +100,11 @@ func (b *Basic) Serve(next http.Handler) http.Handler {
 			slog.Info("user has been banned", slog.String("username", username))
 			goto WrongPassword
 		}
-		realPwd = b.users[username]
+
+		realPwd, ok = b.users[username]
+		if !ok {
+			goto WrongPassword
+		}
 		if subtle.ConstantTimeCompare([]byte(realPwd), []byte(password)) == 1 {
 			goto Next
 		} else {
